@@ -13,6 +13,15 @@ public class TeleOpExample extends TeleOpBase {
         claw.setPosition(0);
     }
 
+    /// REQUIRED
+    @Override
+    public void run(){
+        while(opModeIsActive()){
+            runLoop();
+        }
+    }
+
+
     @Override
     public void runLoop(){
 

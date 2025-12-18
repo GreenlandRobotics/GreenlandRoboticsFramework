@@ -21,12 +21,6 @@ public abstract class TeleOpBase extends OpModeBase {
         inInit();
     }
 
-    @Override
-    protected void run(){
-        while(opModeIsActive()){
-            runLoop();
-        }
-    }
 
     ///Code to be run when you press start
     protected abstract void runLoop();

@@ -27,4 +27,12 @@ public class PathFinder extends TeleOpBase {
 
 
     }
+
+    @Override
+    public void run(){
+        while(opModeIsActive()){
+            runLoop();
+        }
+    }
+
 }

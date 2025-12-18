@@ -19,4 +19,13 @@ public class TeleOpBoilerplate extends TeleOpBase {
     protected void inInit() {
 
     }
+
+    //REQUIRED
+    @Override
+    public void run(){
+        while(opModeIsActive()){
+            runLoop();
+        }
+    }
+
 }

@@ -45,6 +45,7 @@ public abstract class AutoBase extends OpModeBase {
         initSequence();
     }
 
+    /// Very important method: run() extends OpMode
     @Override
     protected void run() {
         runSequence();
@@ -62,6 +63,7 @@ public abstract class AutoBase extends OpModeBase {
     */
     protected void simpleDrive(Axis direction, double power, int time){
         switch(direction){
+            //Axis X
             case X:
                 for(DcMotorEnhanced motor: new DcMotorEnhanced[]{fl,fr,bl,br}){
                     motor.setPower(power);
@@ -69,6 +71,7 @@ public abstract class AutoBase extends OpModeBase {
                 wait(time);
                 stopMotors();
                 break;
+            //Axis Y: Move Left / Right
             case Y:
                 fl.setPower(-power);
                 fr.setPower(power);
@@ -78,6 +81,7 @@ public abstract class AutoBase extends OpModeBase {
                 stopMotors();
                 break;
             default:
+                //Throw an error if there is no Axis Direction (because Axis is defined as an enum)
                 throw new IllegalArgumentException("Invalid direction for simpleDrive: NONE" +
                         "is not a valid direction");
         }
@@ -93,6 +97,7 @@ public abstract class AutoBase extends OpModeBase {
         do {
             telemetry.addLine(String.format("Waiting for %d milliseconds", (milliseconds - timer.milliseconds())));
             telemetry.update();
+            //increment by 50
             sleep(50);
         } while((opModeIsActive() && timer.milliseconds() < milliseconds));
     }
@@ -103,6 +108,7 @@ public abstract class AutoBase extends OpModeBase {
     /// If you need to be accurate in your positioning, use this method.
     /// @param targetX the x coordinate you want to go to
     /// @param targetY the y coordinate you want to go to
+    /// OVERLOADED method (Only takes in X,Y. Then, calls path with NO axis.)
     protected void path(int targetX, int targetY) {
         path(targetX, targetY, Axis.NONE);
     }
@@ -138,7 +144,7 @@ public abstract class AutoBase extends OpModeBase {
                     atTarget = Math.abs(xError) < PATH_TOLERANCE_IN && Math.abs(yError) < PATH_TOLERANCE_IN;
                     break;
             }
-
+            //Toggle logic (Making sure that a session is active when pathing).
             if (atTarget && !endSession) {
                 endSession = true;
                 endTimer.reset();

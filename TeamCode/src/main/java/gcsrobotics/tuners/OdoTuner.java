@@ -33,4 +33,12 @@ public class OdoTuner extends TeleOpBase {
         if (gamepad1.a) resetPosition(); sleep(10);
 
     }
+
+    @Override
+    public void run(){
+        while(opModeIsActive()){
+            runLoop();
+        }
+    }
+
 }
