@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 import gcsrobotics.framework.hardware.Claw;
 import gcsrobotics.framework.hardware.DcMotorEnhanced;
 import gcsrobotics.framework.hardware.GoBildaPinpointDriver;
@@ -40,9 +42,14 @@ public abstract class OpModeBase extends LinearOpMode {
 
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         odo.setEncoderDirections(Constants.xPodDirection, Constants.yPodDirection);
+        odo.setOffsets(
+                Constants.X_ODO_POD_OFFSET_MM,
+                Constants.Y_ODO_POD_OFFSET_MM,
+                DistanceUnit.MM
+        );
         odo.resetPosAndIMU();
 
-        //TODO: Set motor directions. Some motors will be reversed, so you must change that here
+        // You can change these in Constants
         //Note: Typically the right side is reversed, but change it as you need
         fl.setDirection(Constants.flDirection);
         fr.setDirection(Constants.frDirection);

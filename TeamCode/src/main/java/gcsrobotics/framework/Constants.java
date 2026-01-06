@@ -33,6 +33,9 @@ public class Constants {
     public static GoBildaPinpointDriver.EncoderDirection xPodDirection;
     public static GoBildaPinpointDriver.EncoderDirection yPodDirection;
 
+    public static double X_ODO_POD_OFFSET_MM;
+    public static double Y_ODO_POD_OFFSET_MM;
+
     static{
 
         /* Examples of constants
@@ -79,8 +82,8 @@ public class Constants {
         //Reverse this if going left makes the y coordinate go down
         yPodDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
 
-
+        // You will need to change this for your robot
+        X_ODO_POD_OFFSET_MM = 0;
+        Y_ODO_POD_OFFSET_MM = 0;
     }
-
-
 }
