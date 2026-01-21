@@ -56,4 +56,10 @@ public class AutoExample extends AutoBase /*This means it can access stuff from 
         simpleDrive(Axis.Y, 0.5, 1000);
     }
 
+    // This code will be run while the robot is in a path, chain, or turn
+    @Override
+    protected void updateInPath() {
+        arm.setVelocity(10);
+    }
+
 }

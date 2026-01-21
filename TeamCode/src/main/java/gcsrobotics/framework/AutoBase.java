@@ -40,6 +40,8 @@ public abstract class AutoBase extends OpModeBase {
     /// The code that runs during start
     protected abstract void runSequence();
 
+    protected void updateInPath() {}
+
     @Override
     protected void runInit(){
         initSequence();
@@ -157,6 +159,7 @@ public abstract class AutoBase extends OpModeBase {
 
             setMotorPowers(xPower, yPower, headingCorrection);
             sendTelemetry("PATH", xError, yError, xPower, yPower, headingCorrection);
+            updateInPath();
         }
 
         stopMotors();
@@ -210,6 +213,7 @@ public abstract class AutoBase extends OpModeBase {
 
             setMotorPowers(xPower, yPower, headingCorrection);
             sendTelemetry("CHAIN", xError, yError, xPower, yPower, headingCorrection);
+            updateInPath();
         }
         stopMotors();
     }
@@ -251,7 +255,7 @@ public abstract class AutoBase extends OpModeBase {
 
             // Only heading correction, no X/Y drive
             setMotorPowers(0, 0, power);
-
+            updateInPath();
             telemetry.addLine("Turning");
             telemetry.addData("Target Angle", targetAngle);
             telemetry.addData("Current Angle", currentAngle);
