@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import gcsrobotics.framework.hardware.DcMotorEnhanced;
@@ -27,6 +29,8 @@ public abstract class AutoBase extends OpModeBase {
     private ElapsedTime pidTimerX = new ElapsedTime();
     private ElapsedTime pidTimerY = new ElapsedTime();
 
+    protected ActionRunner actions = new ActionRunner();
+
     protected enum Axis{
         X,
         Y,
@@ -39,8 +43,6 @@ public abstract class AutoBase extends OpModeBase {
 
     /// The code that runs during start
     protected abstract void runSequence();
-
-    protected void updateInPath() {}
 
     @Override
     protected void runInit(){
@@ -95,6 +97,7 @@ public abstract class AutoBase extends OpModeBase {
         do {
             telemetry.addLine(String.format("Waiting for %d milliseconds", (milliseconds - timer.milliseconds())));
             telemetry.update();
+            actions.run();
             sleep(50);
         } while((opModeIsActive() && timer.milliseconds() < milliseconds));
     }
@@ -163,7 +166,7 @@ public abstract class AutoBase extends OpModeBase {
 
             setMotorPowers(xPower, yPower, headingCorrection);
             sendTelemetry("PATH", xError, yError, xPower, yPower, headingCorrection);
-            updateInPath();
+            actions.run();
         }
 
         stopMotors();
@@ -222,7 +225,7 @@ public abstract class AutoBase extends OpModeBase {
 
             setMotorPowers(xPower, yPower, headingCorrection);
             sendTelemetry("CHAIN", xError, yError, xPower, yPower, headingCorrection);
-            updateInPath();
+            actions.run();
         }
         stopMotors();
     }
@@ -261,7 +264,7 @@ public abstract class AutoBase extends OpModeBase {
 
             // Only heading correction, no X/Y drive
             setMotorPowers(0, 0, power);
-            updateInPath();
+            actions.run();
             telemetry.addLine("Turning");
             telemetry.addData("Target Angle", this.targetAngle);
             telemetry.addData("Current Angle", currentAngle);
@@ -438,5 +441,23 @@ public abstract class AutoBase extends OpModeBase {
             // 0 is a way to get it to wait for the minimum 50ms
             wait(0);
         }
+    }
+
+    protected class ActionRunner {
+        private ArrayList<Runnable> functions = new ArrayList<>();
+
+        // Should only be constructed in AutoBase, no need to instantiate in an opmode
+        private ActionRunner() {}
+        public void run() {
+            for (Runnable function : functions) {
+                function.run();
+            }
+        }
+        public void clear() {functions.clear();}
+        public void add(Runnable function){functions.add(function);}
+        public void set(Runnable... functions){
+            this.functions = new ArrayList<>(Arrays.asList(functions));
+        }
+
     }
 }

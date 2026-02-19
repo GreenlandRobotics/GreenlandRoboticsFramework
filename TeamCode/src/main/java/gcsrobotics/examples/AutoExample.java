@@ -15,6 +15,16 @@ public class AutoExample extends AutoBase /*This means it can access stuff from 
     @Override
     protected void initSequence() {
         claw.setPosition(0.5);
+        /* This will run the `runDuringPath` function while paths are running
+         * The `this::runDuringPath` is syntax sugar, you don't have to use a function
+         * You may write code directly in this block with the following syntax
+        actions.add(() -> {
+            your code here
+            more code here
+            etc.
+        });
+         */
+        actions.add(this::runDuringPath);
     }
 
     //Put all of your auto logic right in this method, runSequence()
@@ -56,10 +66,10 @@ public class AutoExample extends AutoBase /*This means it can access stuff from 
         simpleDrive(Axis.Y, 0.5, 1000);
     }
 
-    // This code will be run while the robot is in a path, chain, or turn
-    @Override
-    protected void updateInPath() {
-        arm.setVelocity(10);
+    private void runDuringPath(){
+        /*
+        Whatever code you want to run while running paths
+         */
     }
 
 }
